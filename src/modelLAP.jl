@@ -25,3 +25,23 @@ function setLAP(solverSelected,C)
 
   return ip, X
 end
+
+#-------------------------------------------------------------------------------
+
+function glpk_jump(matrice)
+  # GLPK et JUMP
+  ip,X = setLAP(solverSelected,matrice)
+  println("The optimization problem to be solved is:")
+  print(ip)
+  println("Solving...");
+  tic = time()
+  status = solve(ip)
+  # Displaying the results
+  if status == :Optimal
+    println("status = ", status)
+    print("x  = "); println(getvalue(X))
+    println("z  = ", getobjectivevalue(ip))
+  end
+  tac = time()
+  print("Time GLPK-JUMP (LAP) = ",round((tac-tic),3));println(" Secondes")
+end

@@ -1,0 +1,10 @@
+Format des données :
+	Ils respectent le format du OR-Library
+
+	Où
+
+	OR-Library
+			The format of these data files is:
+			number of items to be assigned (n)
+			for each item i (i=1,...,n):
+			the cost of allocating item i to item j (c(i,j),j=1,...,n)
