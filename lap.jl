@@ -2,7 +2,7 @@
 
 # Using the following packages
 
-# include("setULP.jl")
+include("modelLAP.jl")
 
 # =========================================================================== #
 
@@ -199,12 +199,12 @@ function etape3(ligne,colonne,C,matrice)
 end
 
 # ----------------------- Execution --------------------------------------------
-# une matrice carrée
-matrice = copy(C3)
+# Proceeding to the optimization
+solverSelected = GLPKSolverMIP()
+# Matrice carrée
+matrice = copy(C2)
 n,n = size(matrice)
-##################################
-#   Affichage de la matrice
-##################################
+# Affichage de la matrice
 println("La matrice des coûts")
 for i = 1:n
   for j = 1:n
@@ -213,4 +213,24 @@ for i = 1:n
   println()
 end
 # Lancement des etapes d'executions
+tic = time()
 etape0(matrice)
+tac = time()
+print("Time = ",round((tac-tic),3));println(" Secondes")
+# GLPK et JUMP
+ip,X = setLAP(solverSelected,C2)
+
+println("The optimization problem to be solved is:")
+tic = time()
+print(ip)
+println("Solving...");
+status = solve(ip)
+
+# Displaying the results
+if status == :Optimal
+  println("status = ", status)
+  println("z  = ", getobjectivevalue(ip))
+  print("x  = "); println(getvalue(X))
+end
+tac = time()
+print("Time = ",round((tac-tic),3));println(" Secondes")
